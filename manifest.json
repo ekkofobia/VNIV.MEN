@@ -10,15 +10,9 @@
   "theme_color": "#080808",
   "icons": [
     {
-      "src": "https://img.icons8.com/ios-filled/192/ffffff/hanger.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "https://img.icons8.com/ios-filled/512/ffffff/hanger.png",
-      "sizes": "512x512",
-      "type": "image/png",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23080808'/%3E%3Cpath d='M256 96c-88.36 0-160 71.64-160 160s71.64 160 160 160 160-71.64 160-160-71.64-160-160-160zm0 48c61.86 0 112 50.14 112 112s-50.14 112-112 112-112-50.14-112-112 50.14-112 112-112z' fill='%23eeeae2'/%3E%3C/svg%3E",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]
