@@ -14,6 +14,10 @@
 <meta name="apple-mobile-web-app-title" content="VNIV.MEN">
 <link rel="manifest" href="/manifest.json">
 
+<!-- ÍCONE DO APP / FAVICON -->
+<link rel="icon" type="image/webp" href="https://res.cloudinary.com/dwrq06fta/image/upload/v1790822415/VNIV.MEN_FE82D28_imtymr.webp">
+<link rel="apple-touch-icon" href="https://res.cloudinary.com/dwrq06fta/image/upload/v1790822415/VNIV.MEN_FE82D28_imtymr.webp">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -2134,7 +2138,7 @@ const products = [
         subcategory:"Assinatura",
         price:229.90,
         image:"https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=80",
-        description:"Fragrância marcante com notas de saída cítricas, coração de cardamomo e fundo em madeiras nobres.",
+        description:"Fragrância marcante com notas de saída cítricas,格式coração de cardamomo e fundo em madeiras nobres.",
         affiliateUrl:"https://www.mercadolivre.com.br"
     },
     {
@@ -2585,7 +2589,7 @@ function renderProducts(category="Todos", subcategory="Todas"){
             <span class="product-number">${String(index+1).padStart(2,"0")}</span>
 
             <div class="product-image">
-                <img src="${p.image}" alt="${p.name}" loading="lazy">
+                <img src="${p.image}" alt="${p.name}">
                 <div class="product-overlay">
                     <span class="view-btn">Ver Detalhes</span>
                 </div>
@@ -3143,41 +3147,42 @@ if(document.readyState === "loading"){
 /* =========================================================
    REGISTO DO SERVICE WORKER FÍSICO
 ========================================================= */
+let deferredPrompt = null;
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(reg => console.log('ServiceWorker registado com sucesso'))
-      .catch(err => console.log('Falha ao registar ServiceWorker:', err));
+    navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+      .then((reg) => console.log('ServiceWorker registado:', reg.scope))
+      .catch((err) => console.error('Erro no ServiceWorker:', err));
   });
 }
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('Evento de instalação PWA pronto para disparo!');
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  console.log('App instalada com sucesso!');
+});
 
 /* =========================================================
    SISTEMA DE INSTALAÇÃO DO APP (PWA NATIVO COM MODAL FALLBACK)
 ========================================================= */
-let deferredPrompt = null;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-});
-
-window.addEventListener('appinstalled', () => {
-    deferredPrompt = null;
-    console.log('Aplicação instalada com sucesso!');
-});
-
 function installPWA() {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('Utilizador aceitou a instalação');
-            }
-            deferredPrompt = null;
-        });
-    } else {
-        openInstallGuideModal();
-    }
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('Instalação aceita pelo usuário');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    openInstallGuideModal();
+  }
 }
 
 function openInstallGuideModal() {
