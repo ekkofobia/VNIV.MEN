@@ -1492,6 +1492,7 @@ footer{
     transform:none;
 }
 
+/* Tópicos com redução de 35% */
 .mobile-menu button.menu-link{
     text-align:left;
     padding:8px 0;
@@ -2595,9 +2596,7 @@ function renderProducts(category="Todos", subcategory="Todas"){
                     <div class="product-name">${p.name}</div>
                     <div class="product-price">${formatPrice(p.price)}</div>
                 </div>
-                <div class="product-category">
-                    ${p.category}${p.subcategory ? " · " + p.subcategory : ""}
-                </div>
+                <div class="product-category">${p.category}${p.subcategory ? " · " + p.subcategory : ""}</div>
             </div>
         `;
 
@@ -3153,13 +3152,18 @@ if ('serviceWorker' in navigator) {
 }
 
 /* =========================================================
-   SISTEMA DE INSTALAÇÃO DO APP (PWA)
+   SISTEMA DE INSTALAÇÃO DO APP (PWA NATIVO COM MODAL FALLBACK)
 ========================================================= */
-let deferredPrompt;
+let deferredPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
+});
+
+window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    console.log('Aplicação instalada com sucesso!');
 });
 
 function installPWA() {
@@ -3167,7 +3171,7 @@ function installPWA() {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
-                console.log('App instalado com sucesso');
+                console.log('Utilizador aceitou a instalação');
             }
             deferredPrompt = null;
         });
